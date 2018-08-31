@@ -1,0 +1,11 @@
+body {
+    color: #00132a;
+    background-color: #ccffff;
+}
+
+#game_canvas {
+    width: 600px;
+    height: 480px;
+    background-color: #ffffff;
+    border: 1px solid #00132a;
+}
