@@ -10,12 +10,19 @@
 <body>
     <div class="container">
         <h1>The dollar game</h1>
-        <p class='lead'>As explained on <a href="https://youtu.be/U33dsEcKgeQ">Numberphile</a>.</p>
-        <canvas id='game_canvas'></canvas>
+        <p class="lead">As explained on <a href="https://youtu.be/U33dsEcKgeQ">Numberphile</a>.</p>
+        <div id="graph_controls">
+            <button id="add_node_btn">Add Node</button>
+            <button id="add_edge_btn">Add Edge</button>
+            <button id="node_give_btn">Give</button>
+            <button id="node_take_btn">Take</button>
+        </div>
+        <div id="graph_area"></div>
     </div>
-    <script src="js/graph.js"></script>
     <script src="js/lib/jquery-3.3.1.slim.min.js"></script>
     <script src="js/lib/popper.min.js"></script>
     <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/graph.js"></script>
+    <script src="js/draw.js"></script>
 </body>
 </html>

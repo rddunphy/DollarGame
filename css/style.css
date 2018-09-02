@@ -3,9 +3,17 @@ body {
     background-color: #ccffff;
 }
 
-#game_canvas {
+#graph_area {
     width: 600px;
     height: 480px;
     background-color: #ffffff;
     border: 1px solid #00132a;
+}
+
+.node {
+    width: 30px;
+    height: 30px;
+    color: #ffffff;
+    background-color: #00132a;
+    border-radius: 15px;
 }
