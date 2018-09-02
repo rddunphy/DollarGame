@@ -13,7 +13,15 @@ body {
 .node {
     width: 30px;
     height: 30px;
-    color: #ffffff;
     background-color: #00132a;
     border-radius: 15px;
+        color: #ffffff;
+        font-weight: bold;
+        font-size: large;
+        position: relative;
+        top: 0px;
+        left: 0px;
+        height: 30px;
+        width: 30px;
+        text-align: center;
 }
