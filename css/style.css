@@ -3,6 +3,11 @@ body {
     background-color: #eeffee;
 }
 
+.container {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
 #graph_controls {
     margin-bottom: 10px;
 }
@@ -16,7 +21,6 @@ body {
 
 #footer {
     margin-top: 20px;
-    margin-bottom: 30px;
 }
 
 .node {
