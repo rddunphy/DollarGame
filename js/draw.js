@@ -107,11 +107,33 @@ function abortEdit() {
     }
 }
 
+function getButtonName(state) {
+    if (state == StateEnum.NODE_TAKE) {
+        return "node_take_btn";
+    }
+    if (state == StateEnum.NODE_GIVE) {
+        return "node_give_btn";
+    }
+    if (state == StateEnum.ADD_EDGE_A |
+            state == StateEnum.ADD_EDGE_B) {
+        return "add_edge_btn";
+    }
+    return "add_node_btn";
+}
+
 function setState(newState) {
     if (state == StateEnum.EDIT_NODE) {
         finishEdit();
     } else if (state == StateEnum.ADD_EDGE_B) {
         removeSelection();
+    }
+    var oldBtn = getButtonName(state);
+    var newBtn = getButtonName(newState);
+    if (oldBtn != newBtn) {
+        document.getElementById(oldBtn).classList.add("btn-dark");
+        document.getElementById(oldBtn).classList.remove("btn-light");
+        document.getElementById(newBtn).classList.add("btn-light");
+        document.getElementById(newBtn).classList.remove("btn-dark");
     }
     state = newState;
 }
