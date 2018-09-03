@@ -27,7 +27,9 @@ function Node(div) {
         if (!this.connected.includes(node)) {
             this.connected.push(node);
             node.connected.push(this);
+            return true;
         }
+        return false;
     };
     this.give = function() {
         for (var i=0; i < this.connected.length; i++) {

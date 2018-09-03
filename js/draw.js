@@ -15,8 +15,9 @@ var selectedNode = undefined;
 function addEdge(nodeIdA, nodeIdB) {
     var nodeA = graph.nodes[nodeIdA];
     var nodeB = graph.nodes[nodeIdB];
-    nodeA.addEdge(nodeB);
-    graphAreaDiv.appendChild(createEdgeElement(nodeIdA, nodeIdB));
+    if (nodeA.addEdge(nodeB)) {
+        graphAreaDiv.appendChild(createEdgeElement(nodeIdA, nodeIdB));
+    }
 }
 
 function handleNodeClick(nodeId) {
@@ -27,12 +28,12 @@ function handleNodeClick(nodeId) {
         node.take();
     } else if (state == StateEnum.ADD_EDGE_A) {
         selectedNode = nodeId;
+        graph.nodes[nodeId].div.classList.add("selected");
         setState(StateEnum.ADD_EDGE_B);
     } else if (state == StateEnum.ADD_EDGE_B) {
         if (selectedNode != nodeId) {
             addEdge(selectedNode, nodeId)
         }
-        selectedNode = undefined;
         setState(StateEnum.ADD_EDGE_A);
     }
 }
@@ -82,6 +83,13 @@ function createNode(x, y) {
     setState(StateEnum.EDIT_NODE);
 }
 
+function removeSelection() {
+    if (selectedNode != null) {
+        graph.nodes[selectedNode].div.classList.remove("selected");
+        selectedNode = undefined;
+    }
+}
+
 function finishEdit() {
     if (selectedNode != null) {
         var textbox = document.getElementById("node_input_" + selectedNode);
@@ -102,6 +110,8 @@ function abortEdit() {
 function setState(newState) {
     if (state == StateEnum.EDIT_NODE) {
         finishEdit();
+    } else if (state == StateEnum.ADD_EDGE_B) {
+        removeSelection();
     }
     state = newState;
 }
