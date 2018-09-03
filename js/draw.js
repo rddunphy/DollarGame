@@ -11,7 +11,6 @@ var StateEnum = Object.freeze({
 var graph = new Graph();
 var state = StateEnum.ADD_NODE;
 var selectedNode = undefined;
-var nodeEditId = undefined;
 
 function addEdge(nodeIdA, nodeIdB) {
     var nodeA = graph.nodes[nodeIdA];
@@ -71,31 +70,32 @@ function createNode(x, y) {
     nodeDiv.onclick = function() {
         handleNodeClick(id);
     };
+    nodeDiv.id = "node_" + id;
     var textbox = document.createElement('input');
     textbox.value = 0;
-    nodeDiv.appendChild(textbox);
-    nodeDiv.id = "node_" + id;
     textbox.id = "node_input_" + id;
     textbox.classList.add("node_input");
-    nodeEditId = id;
+    nodeDiv.appendChild(textbox);
     graphAreaDiv.appendChild(nodeDiv);
+    textbox.select();
+    selectedNode = id;
     setState(StateEnum.EDIT_NODE);
 }
 
 function finishEdit() {
-    if (nodeEditId != null) {
-        var textbox = document.getElementById("node_input_" + nodeEditId);
+    if (selectedNode != null) {
+        var textbox = document.getElementById("node_input_" + selectedNode);
         var val = parseInt(textbox.value) | 0;
-        graph.nodes[nodeEditId].setValue(val);
-        nodeEditId = undefined;
+        graph.nodes[selectedNode].setValue(val);
+        selectedNode = undefined;
     }
 }
 
 function abortEdit() {
-    if (nodeEditId != null) {
-        var val = graph.nodes[nodeEditId].value | 0;
-        graph.nodes[nodeEditId].setValue(val);
-        nodeEditId = undefined;
+    if (selectedNode != null) {
+        var val = graph.nodes[selectedNode].value | 0;
+        graph.nodes[selectedNode].setValue(val);
+        selectedNode = undefined;
     }
 }
 
