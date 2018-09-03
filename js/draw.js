@@ -1,5 +1,3 @@
-var graphAreaDiv = document.getElementById("graph_area");
-
 var StateEnum = Object.freeze({
     "ADD_NODE": 0,
     "ADD_EDGE_A": 1,
@@ -8,9 +6,16 @@ var StateEnum = Object.freeze({
     "NODE_TAKE": 4,
     "EDIT_NODE": 5
 });
+var graphAreaDiv = document.getElementById("graph_area");
 var graph = new Graph();
 var state = StateEnum.ADD_NODE;
 var selectedNode = undefined;
+
+function clearGraph() {
+    graph = new Graph();
+    graphAreaDiv.innerHTML = "";
+    selectedNode = undefined;
+}
 
 function addEdge(nodeIdA, nodeIdB) {
     var nodeA = graph.nodes[nodeIdA];
@@ -177,4 +182,8 @@ $("#node_give_btn").click(function(e) {
 
 $("#node_take_btn").click(function(e) {
     setState(StateEnum.NODE_TAKE);
+});
+
+$("#clear_btn").click(function(e) {
+    clearGraph();
 });
