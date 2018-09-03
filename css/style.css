@@ -14,6 +14,11 @@ body {
     border: 1px solid #00132a;
 }
 
+#footer {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
 .node {
     width: 30px;
     height: 30px;
