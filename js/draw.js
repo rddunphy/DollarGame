@@ -6,15 +6,22 @@ var StateEnum = Object.freeze({
     "NODE_TAKE": 4,
     "EDIT_NODE": 5
 });
+var ControlHelp = {
+    "add_node_btn": "Click anywhere in the graph area to create a node, then type an integer value to assign to the node.",
+    "add_edge_btn": "Click on a node to selected, then click on another node to add an edge between the two.",
+    "node_give_btn": "Click on a node to make it give one dollar to each connected node.",
+    "node_take_btn": "Click on a node to make it take one dollar from each connected node."
+};
 var graphAreaDiv = document.getElementById("graph_area");
-var graph = new Graph();
-var state = StateEnum.ADD_NODE;
+var graph = undefined;
+var state = undefined;
 var selectedNode = undefined;
 
 function clearGraph() {
     graph = new Graph();
-    graphAreaDiv.innerHTML = "";
     selectedNode = undefined;
+    graphAreaDiv.innerHTML = "";
+    setState(StateEnum.ADD_NODE);
 }
 
 function addEdge(nodeIdA, nodeIdB) {
@@ -123,7 +130,11 @@ function getButtonName(state) {
             state == StateEnum.ADD_EDGE_B) {
         return "add_edge_btn";
     }
-    return "add_node_btn";
+    if (state == StateEnum.ADD_NODE |
+            state == StateEnum.EDIT_NODE) {
+        return "add_node_btn";
+    }
+    return "";
 }
 
 function setState(newState) {
@@ -135,10 +146,13 @@ function setState(newState) {
     var oldBtn = getButtonName(state);
     var newBtn = getButtonName(newState);
     if (oldBtn != newBtn) {
-        document.getElementById(oldBtn).classList.add("btn-dark");
-        document.getElementById(oldBtn).classList.remove("btn-light");
+        if (oldBtn) {
+            document.getElementById(oldBtn).classList.add("btn-dark");
+            document.getElementById(oldBtn).classList.remove("btn-light");
+        }
         document.getElementById(newBtn).classList.add("btn-light");
         document.getElementById(newBtn).classList.remove("btn-dark");
+        document.getElementById("control_help").innerHTML = ControlHelp[newBtn];
     }
     state = newState;
 }
@@ -187,3 +201,5 @@ $("#node_take_btn").click(function(e) {
 $("#clear_btn").click(function(e) {
     clearGraph();
 });
+
+clearGraph();
