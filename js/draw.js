@@ -12,7 +12,6 @@ var state = StateEnum.ADD_NODE;
 var edgeNodeA = undefined;
 
 function handleNodeClick(nodeId) {
-    console.log(state);
     var node = graph.nodes[nodeId];
     if (state == StateEnum.NODE_GIVE) {
         node.give();
@@ -47,7 +46,6 @@ function createNode(x, y) {
 }
 
 function handleGraphAreaClick(x, y) {
-    console.log("graph_area click at (" + x + ", " + y + ").")
     if (state == StateEnum.ADD_NODE) {
         createNode(x, y);
     }
