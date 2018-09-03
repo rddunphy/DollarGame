@@ -18,10 +18,21 @@ body {
     color: #ffffff;
     font-weight: bold;
     font-size: large;
-    position: relative;
+    position: absolute;
     top: 0px;
     left: 0px;
     height: 30px;
     width: 30px;
     text-align: center;
+    z-index: 3;
+}
+
+.edge {
+    position: absolute;
+    z-index: 2;
+    border: 1px solid #00132a;
+}
+
+.node_input {
+    width: 50px;
 }

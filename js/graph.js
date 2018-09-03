@@ -11,12 +11,12 @@ function Graph() {
     this.nodes = new Object();
     this.addNode = function(div) {
         var id = newNodeId(this.nodes);
-        this.nodes[id] = new Node(div, 0);
+        this.nodes[id] = new Node(div);
         return id;
     };
 }
 
-function Node(div, value) {
+function Node(div) {
     this.div = div;
     this.connected = [];
     this.setValue = function(value) {
@@ -41,5 +41,4 @@ function Node(div, value) {
         }
         this.setValue(this.value + this.connected.length);
     };
-    this.setValue(value);
 }
