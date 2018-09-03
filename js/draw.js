@@ -11,6 +11,7 @@ var StateEnum = Object.freeze({
 var graph = new Graph();
 var state = StateEnum.ADD_NODE;
 var selectedNode = undefined;
+var nodeEditId = undefined;
 
 function addEdge(nodeIdA, nodeIdB) {
     var nodeA = graph.nodes[nodeIdA];
@@ -21,7 +22,6 @@ function addEdge(nodeIdA, nodeIdB) {
 
 function handleNodeClick(nodeId) {
     var node = graph.nodes[nodeId];
-    console.log(nodeId);
     if (state == StateEnum.NODE_GIVE) {
         node.give();
     } else if (state == StateEnum.NODE_TAKE) {
@@ -60,8 +60,6 @@ function createEdgeElement(nodeIdA, nodeIdB) {
     return edgeDiv;
 }
 
-var nodeEditId = undefined;
-
 function createNode(x, y) {
     x -= 15;
     y -= 15;
@@ -93,6 +91,14 @@ function finishEdit() {
     }
 }
 
+function abortEdit() {
+    if (nodeEditId != null) {
+        var val = graph.nodes[nodeEditId].value | 0;
+        graph.nodes[nodeEditId].setValue(val);
+        nodeEditId = undefined;
+    }
+}
+
 function setState(newState) {
     if (state == StateEnum.EDIT_NODE) {
         finishEdit();
@@ -112,6 +118,16 @@ function handleGraphAreaClick(x, y) {
 $("#graph_area").click(function(e) {
     if (e.target == this) {
         handleGraphAreaClick(e.pageX, e.pageY);
+    }
+});
+
+$("#graph_area").keypress(function(e) {
+    if (state == StateEnum.EDIT_NODE) {
+        if (e.key == "Escape") {  // Esc
+            abortEdit();
+        } else if (e.key == "Enter" | e.key == "Tab") {
+            finishEdit();
+        }
     }
 });
 
