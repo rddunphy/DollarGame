@@ -11,12 +11,35 @@ function Graph() {
     this.nodes = new Object();
     this.addNode = function(div) {
         var id = newNodeId(this.nodes);
-        this.nodes[id] = new Node(div);
+        this.nodes[id] = new Node(id, div);
         return id;
+    };
+    this.removeNode = function(nodeId) {
+        var node = this.nodes[nodeId];
+        for (var n in this.nodes) {
+            var i = this.nodes[n].connected.indexOf(node);
+            if (i > -1) {
+                this.nodes[n].connected.splice(i, 1);
+            }
+        }
+        delete this.nodes[nodeId];
+    };
+    this.removeEdge = function(nodeIdA, nodeIdB) {
+        var na = this.nodes[nodeIdA];
+        var nb = this.nodes[nodeIdB];
+        var i = na.connected.indexOf(nb);
+        if (i > -1) {
+            na.connected.splice(i, 1);
+        }
+        i = nb.connected.indexOf(na);
+        if (i > -1) {
+            nb.connected.splice(i, 1);
+        }
     };
 }
 
-function Node(div) {
+function Node(id, div) {
+    this.id = id;
     this.div = div;
     this.connected = [];
     this.setValue = function(value) {

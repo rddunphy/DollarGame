@@ -4,11 +4,13 @@ var StateEnum = Object.freeze({
     "ADD_EDGE_B": 2,
     "NODE_GIVE": 3,
     "NODE_TAKE": 4,
-    "EDIT_NODE": 5
+    "EDIT_NODE": 5,
+    "DELETE": 6
 });
 var ControlHelp = {
     "add_node_btn": "Click anywhere in the graph area to create a node, then type an integer value to assign to the node.",
     "add_edge_btn": "Click on a node to select it, then click on another node to add an edge between the two.",
+    "delete_btn": "Click on a node or edge to remove it.",
     "node_give_btn": "Click on a node to make it give one dollar to each connected node.",
     "node_take_btn": "Click on a node to make it take one dollar from each connected node."
 };
@@ -47,7 +49,29 @@ function handleNodeClick(nodeId) {
             addEdge(selectedNode, nodeId)
         }
         setState(StateEnum.ADD_EDGE_A);
+    } else if (state == StateEnum.DELETE) {
+        graphAreaDiv.removeChild(node.div);
+        for (var n in graph.nodes[nodeId].connected) {
+            var cid = graph.nodes[nodeId].connected[n].id;
+            var e = document.getElementById(createEdgeDivId(nodeId, cid));
+            graphAreaDiv.removeChild(e);
+        }
+        graph.removeNode(nodeId);
     }
+}
+
+function handleEdgeClick(nodeIdA, nodeIdB) {
+    if (state == StateEnum.DELETE) {
+        graph.removeEdge(nodeIdA, nodeIdB);
+        var e = document.getElementById(createEdgeDivId(nodeIdA, nodeIdB));
+        graphAreaDiv.removeChild(e);
+    }
+}
+
+function createEdgeDivId(nodeIdA, nodeIdB) {
+    var s = (nodeIdA < nodeIdB) ? nodeIdA : nodeIdB;
+    var l = (nodeIdA < nodeIdB) ? nodeIdB : nodeIdA;
+    return "edge_" + s + "_" + l;
 }
 
 function createEdgeElement(nodeIdA, nodeIdB) {
@@ -65,8 +89,12 @@ function createEdgeElement(nodeIdA, nodeIdB) {
     var angle = Math.atan2((ya - yb), (xa - xb)) * (180 / Math.PI);
     var edgeDiv = document.createElement('div');
     edgeDiv.classList.add("edge");
+    edgeDiv.id = createEdgeDivId(nodeIdA, nodeIdB);
     edgeDiv.style.left = cx + "px";
     edgeDiv.style.top = cy + "px";
+    edgeDiv.onclick = function() {
+        handleEdgeClick(nodeIdA, nodeIdB);
+    };
     edgeDiv.style.width = length + "px";
     edgeDiv.style.transform = "rotate(" + angle + "deg)";
     return edgeDiv;
@@ -134,7 +162,10 @@ function getButtonName(state) {
             state == StateEnum.EDIT_NODE) {
         return "add_node_btn";
     }
-    return "";
+    if (state == StateEnum.DELETE) {
+        return "delete_btn";
+    }
+    return undefined;
 }
 
 function setState(newState) {
@@ -174,7 +205,7 @@ $("#graph_area").click(function(e) {
 
 $("#graph_area").keypress(function(e) {
     if (state == StateEnum.EDIT_NODE) {
-        if (e.key == "Escape") {  // Esc
+        if (e.key == "Escape") {
             abortEdit();
         } else if (e.key == "Enter" | e.key == "Tab") {
             finishEdit();
@@ -188,6 +219,10 @@ $("#add_node_btn").click(function(e) {
 
 $("#add_edge_btn").click(function(e) {
     setState(StateEnum.ADD_EDGE_A);
+});
+
+$("#delete_btn").click(function(e) {
+    setState(StateEnum.DELETE);
 });
 
 $("#node_give_btn").click(function(e) {
