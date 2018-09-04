@@ -8,7 +8,7 @@ var StateEnum = Object.freeze({
 });
 var ControlHelp = {
     "add_node_btn": "Click anywhere in the graph area to create a node, then type an integer value to assign to the node.",
-    "add_edge_btn": "Click on a node to selected, then click on another node to add an edge between the two.",
+    "add_edge_btn": "Click on a node to select it, then click on another node to add an edge between the two.",
     "node_give_btn": "Click on a node to make it give one dollar to each connected node.",
     "node_take_btn": "Click on a node to make it take one dollar from each connected node."
 };
