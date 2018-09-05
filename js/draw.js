@@ -18,6 +18,7 @@ var graphAreaDiv = document.getElementById("graph_area");
 var graph = undefined;
 var state = undefined;
 var selectedNode = undefined;
+var mousedownNode = undefined;
 
 function clearGraph() {
     graph = new Graph();
@@ -60,6 +61,17 @@ function handleNodeClick(nodeId) {
     }
 }
 
+function handleNodeMousedown(id) {
+    mousedownNode = id;
+}
+
+function handleNodeMouseup(id) {
+    if (state == StateEnum.ADD_EDGE_A & mousedownNode != id) {
+        addEdge(mousedownNode, id);
+    }
+    mousedownNode = undefined;
+}
+
 function handleEdgeClick(nodeIdA, nodeIdB) {
     if (state == StateEnum.DELETE) {
         graph.removeEdge(nodeIdA, nodeIdB);
@@ -76,7 +88,6 @@ function createEdgeDivId(nodeIdA, nodeIdB) {
 
 function createEdgeElement(nodeIdA, nodeIdB) {
     var nodeDiv = graph.nodes[nodeIdA].div;
-    var rect = nodeDiv.getBoundingClientRect();
     var xa = parseInt(nodeDiv.style.left) + 15;
     var ya = parseInt(nodeDiv.style.top) + 15;
     nodeDiv = graph.nodes[nodeIdB].div;
@@ -110,6 +121,12 @@ function createNode(x, y) {
     var id = graph.addNode(nodeDiv);
     nodeDiv.onclick = function() {
         handleNodeClick(id);
+    };
+    nodeDiv.onmousedown = function(e) {
+        handleNodeMousedown(id);
+    };
+    nodeDiv.onmouseup = function(e) {
+        handleNodeMouseup(id);
     };
     nodeDiv.id = "node_" + id;
     var textbox = document.createElement('input');
