@@ -195,11 +195,11 @@ function setState(newState) {
     var newBtn = getButtonName(newState);
     if (oldBtn != newBtn) {
         if (oldBtn) {
-            document.getElementById(oldBtn).classList.add("btn-dark");
-            document.getElementById(oldBtn).classList.remove("btn-light");
+            document.getElementById(oldBtn).classList.add("btn-outline-dark");
+            document.getElementById(oldBtn).classList.remove("btn-dark");
         }
-        document.getElementById(newBtn).classList.add("btn-light");
-        document.getElementById(newBtn).classList.remove("btn-dark");
+        document.getElementById(newBtn).classList.add("btn-dark");
+        document.getElementById(newBtn).classList.remove("btn-outline-dark");
         document.getElementById("control_help").innerHTML = ControlHelp[newBtn];
     }
     state = newState;
