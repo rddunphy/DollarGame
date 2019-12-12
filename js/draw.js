@@ -7,18 +7,26 @@ var StateEnum = Object.freeze({
     "EDIT_NODE": 5,
     "DELETE": 6
 });
-var ControlHelp = {
+var ControlHelp = Object.freeze({
     "add_node_btn": "Click anywhere in the graph area to create a node, then type an integer value to assign to the node.",
     "add_edge_btn": "Click on a node to select it, then click on another node to add an edge between the two.",
     "delete_btn": "Click on a node or edge to remove it.",
     "node_give_btn": "Click on a node to make it give one dollar to each connected node.",
     "node_take_btn": "Click on a node to make it take one dollar from each connected node."
-};
+});
 var graphAreaDiv = document.getElementById("graph_area");
 var graph = undefined;
 var state = undefined;
 var selectedNode = undefined;
 var mousedownNode = undefined;
+
+function checkGraphBalanced() {
+    if (graph.isBalanced()) {
+        graphAreaDiv.classList.add("graph_area_balanced");
+    } else {
+        graphAreaDiv.classList.remove("graph_area_balanced");
+    }
+}
 
 function clearGraph() {
     graph = new Graph();
@@ -39,8 +47,10 @@ function handleNodeClick(nodeId) {
     var node = graph.nodes[nodeId];
     if (state == StateEnum.NODE_GIVE) {
         node.give();
+        checkGraphBalanced();
     } else if (state == StateEnum.NODE_TAKE) {
         node.take();
+        checkGraphBalanced();
     } else if (state == StateEnum.ADD_EDGE_A) {
         selectedNode = nodeId;
         graph.nodes[nodeId].div.classList.add("selected");
@@ -58,6 +68,7 @@ function handleNodeClick(nodeId) {
             graphAreaDiv.removeChild(e);
         }
         graph.removeNode(nodeId);
+        checkGraphBalanced();
     }
 }
 
@@ -152,6 +163,7 @@ function finishEdit() {
         var textbox = document.getElementById("node_input_" + selectedNode);
         var val = parseInt(textbox.value) | 0;
         graph.nodes[selectedNode].setValue(val);
+        checkGraphBalanced();
         selectedNode = undefined;
     }
 }

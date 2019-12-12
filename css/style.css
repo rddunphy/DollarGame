@@ -15,11 +15,11 @@ body {
 #graph_area {
     width: 600px;
     height: 480px;
-    background-color: #ffffff;
+    background-color: white;
     border: 1px solid #00132a;
 }
 
-#footer {
+footer {
     margin-top: 20px;
 }
 
@@ -28,7 +28,6 @@ body {
     height: 30px;
     background-color: #00132a;
     border-radius: 15px;
-    color: #ffffff;
     font-weight: bold;
     font-size: large;
     position: absolute;
@@ -52,4 +51,16 @@ body {
 
 .node_input {
     width: 50px;
+}
+
+.node_val_negative {
+    color: red;
+}
+
+.node_val_positive {
+    color: white;
+}
+
+.graph_area_balanced div {
+    background-color: green;
 }

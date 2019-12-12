@@ -36,6 +36,9 @@ function Graph() {
             nb.connected.splice(i, 1);
         }
     };
+    this.isBalanced = function() {
+        return Object.entries(this.nodes).every(e => e[1].value >= 0);
+    };
 }
 
 function Node(id, div) {
@@ -44,7 +47,8 @@ function Node(id, div) {
     this.connected = [];
     this.setValue = function(value) {
         this.value = value;
-        this.div.innerHTML = "<span>" + value + "</span>";
+        var node_class = (value < 0) ? "node_val_negative" : "node_val_positive";
+        this.div.innerHTML = "<span class=\"" + node_class + "\">" + value + "</span>";
     };
     this.addEdge = function(node) {
         if (!this.connected.includes(node)) {
