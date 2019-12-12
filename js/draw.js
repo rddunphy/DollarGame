@@ -32,7 +32,6 @@ function clearGraph() {
     graph = new Graph();
     selectedNode = undefined;
     graphAreaDiv.innerHTML = "";
-    setState(StateEnum.ADD_NODE);
 }
 
 function addEdge(nodeIdA, nodeIdB) {
@@ -226,6 +225,60 @@ function handleGraphAreaClick(x, y) {
     }
 }
 
+function loadNode(x, y, val) {
+    x += graphAreaDiv.offsetLeft + graphAreaDiv.offsetWidth / 2 - 15;
+    y += graphAreaDiv.offsetTop + graphAreaDiv.offsetHeight / 2 - 15;
+    var nodeDiv = document.createElement('div');
+    nodeDiv.classList.add("node");
+    var id = graph.addNode(nodeDiv);
+    nodeDiv.onclick = function() {
+        handleNodeClick(id);
+    };
+    nodeDiv.onmousedown = function(e) {
+        handleNodeMousedown(id);
+    };
+    nodeDiv.onmouseup = function(e) {
+        handleNodeMouseup(id);
+    };
+    nodeDiv.id = "node_" + id;
+    graphAreaDiv.appendChild(nodeDiv);
+    nodeDiv.style.left = x + "px";
+    nodeDiv.style.top = y + "px";
+    graph.nodes[id].setValue(val);
+    return id;
+}
+
+function easyGraph() {
+    var a = loadNode(-100, 0, 5);
+    var b = loadNode(100, 0, -5);
+    addEdge(a, b);
+}
+
+function hardGraph() {
+    var a = loadNode(-150, -100, 0);
+    var b = loadNode(150, -100, 0);
+    var c = loadNode(-150, 100, 0);
+    var d = loadNode(150, 100, 0);
+    var e = loadNode(-50, 0, 5);
+    var f = loadNode(50, 0, -5);
+    addEdge(a, b);
+    addEdge(b, d);
+    addEdge(c, d);
+    addEdge(c, a);
+    addEdge(e, f);
+    addEdge(a, e);
+    addEdge(c, e);
+    addEdge(b, f);
+    addEdge(d, f);
+}
+
+function loadGraph(graphFn) {
+    clearGraph();
+    setState(StateEnum.NODE_GIVE);
+    graphFn();
+    checkGraphBalanced();
+}
+
 $("#graph_area").click(function(e) {
     if (e.target == this) {
         handleGraphAreaClick(e.pageX, e.pageY);
@@ -264,6 +317,15 @@ $("#node_take_btn").click(function(e) {
 
 $("#clear_btn").click(function(e) {
     clearGraph();
+    setState(StateEnum.ADD_NODE);
 });
 
-clearGraph();
+$("#load_easy").click(function(e) {
+    loadGraph(easyGraph);
+});
+
+$("#load_hard").click(function(e) {
+    loadGraph(hardGraph);
+});
+
+loadGraph(hardGraph);

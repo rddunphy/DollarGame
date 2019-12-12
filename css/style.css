@@ -61,6 +61,6 @@ footer {
     color: white;
 }
 
-.graph_area_balanced div {
+.graph_area_balanced .node {
     background-color: green;
 }

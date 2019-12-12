@@ -12,19 +12,26 @@
     <div class="container">
         <h1>The dollar game</h1>
         <p class="lead">As explained on <a href="https://youtu.be/U33dsEcKgeQ">Numberphile</a>.</p>
-        <p>Create a graph of nodes with positive and negative integer values, then see if you can balance the graph by giving and taking from nodes until there are no negative values remaining.</p>
+        <p>Balance the graph by giving and taking from nodes until there are no negative values remaining.</p>
         <div id="graph_controls">
             <p>
             <div class="btn-toolbar" role="toolbar">
                 <div class="btn-group mr-3" role="group">
-                    <button type="button" id="add_node_btn" class="btn btn-dark" title="Add node"><span class="fas fa-plus-circle"></span></button>
+                    <button type="button" id="node_give_btn" class="btn btn-outline-dark" title="Give"><span class="fas fa-expand-arrows-alt"></span></button>
+                    <button type="button" id="node_take_btn" class="btn btn-outline-dark" title="Take"><span class="fas fa-compress-arrows-alt"></span></button>
+                </div>
+                <div class="btn-group mr-3" role="group">
+                    <button type="button" id="add_node_btn" class="btn btn-outline-dark" title="Add node"><span class="fas fa-plus-circle"></span></button>
                     <button type="button" id="add_edge_btn" class="btn btn-outline-dark" title="Add edge"><span class="fas fa-project-diagram"></span></button>
                     <button type="button" id="delete_btn" class="btn btn-outline-dark" title="Delete"><span class="fas fa-minus-circle"></span></button>
                     <button type="button" id="clear_btn" class="btn btn-outline-danger" title="Clear"><span class="fas fa-trash"></span></button>
                 </div>
                 <div class="btn-group" role="group">
-                    <button type="button" id="node_give_btn" class="btn btn-outline-dark" title="Give"><span class="fas fa-expand-arrows-alt"></span></button>
-                    <button type="button" id="node_take_btn" class="btn btn-outline-dark" title="Take"><span class="fas fa-compress-arrows-alt"></span></button>
+                    <button id="btnGroupDrop1" type="button" class="btn btn-outline-dark dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Load</button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" id="load_easy">Easy</a>
+                        <a class="dropdown-item" href="#" id="load_hard">Hard</a>
+                    </div>
                 </div>
             </div>
             </p>
