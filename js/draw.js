@@ -248,10 +248,34 @@ function loadNode(x, y, val) {
     return id;
 }
 
-function easyGraph() {
+function trivialGraph() {
     var a = loadNode(-100, 0, 5);
     var b = loadNode(100, 0, -5);
     addEdge(a, b);
+}
+
+function easyGraph() {
+    var a = loadNode(-80, -80, 2);
+    var b = loadNode(80, -80, -1);
+    var c = loadNode(-80, 80, 1);
+    var d = loadNode(80, 80, -1);
+    addEdge(a, d);
+    addEdge(b, c);
+    addEdge(c, d);
+    addEdge(b, d);
+}
+
+function mediumGraph() {
+    var a = loadNode(0, -100, 1);
+    var b = loadNode(-120, -10, -1);
+    var c = loadNode(120, -10, -2);
+    var d = loadNode(-60, 100, 2);
+    var e = loadNode(60, 100, 3);
+    addEdge(a, e);
+    addEdge(a, c);
+    addEdge(b, c);
+    addEdge(c, e);
+    addEdge(d, e);
 }
 
 function hardGraph() {
@@ -270,6 +294,15 @@ function hardGraph() {
     addEdge(c, e);
     addEdge(b, f);
     addEdge(d, f);
+}
+
+function unsolvableGraph() {
+    var a = loadNode(0, -50, 0);
+    var b = loadNode(-80, 50, -1);
+    var c = loadNode(80, 50, 1);
+    addEdge(a, b);
+    addEdge(b, c);
+    addEdge(c, a);
 }
 
 function loadGraph(graphFn) {
@@ -320,12 +353,24 @@ $("#clear_btn").click(function(e) {
     setState(StateEnum.ADD_NODE);
 });
 
+$("#load_trivial").click(function(e) {
+    loadGraph(trivialGraph);
+});
+
 $("#load_easy").click(function(e) {
     loadGraph(easyGraph);
+});
+
+$("#load_medium").click(function(e) {
+    loadGraph(mediumGraph);
 });
 
 $("#load_hard").click(function(e) {
     loadGraph(hardGraph);
 });
 
-loadGraph(hardGraph);
+$("#load_unsolvable").click(function(e) {
+    loadGraph(unsolvableGraph);
+});
+
+loadGraph(mediumGraph);
