@@ -37,6 +37,10 @@ footer {
     width: 30px;
     text-align: center;
     z-index: 3;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .node.selected {
