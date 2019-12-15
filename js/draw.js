@@ -2,14 +2,18 @@ var StateEnum = Object.freeze({
     "ADD_NODE": 0,
     "ADD_EDGE_A": 1,
     "ADD_EDGE_B": 2,
-    "NODE_GIVE": 3,
-    "NODE_TAKE": 4,
-    "EDIT_NODE": 5,
-    "DELETE": 6
+    "MOVE_NODE": 3,
+    "EDIT_NODE_VAL": 4,
+    "NODE_GIVE": 5,
+    "NODE_TAKE": 6,
+    "EDIT_NODE": 7,
+    "DELETE": 8
 });
 var ControlHelp = Object.freeze({
     "add_node_btn": "Click anywhere in the graph area to create a node, then type an integer value to assign to the node.",
     "add_edge_btn": "Drag from one node to another to add an edge.",
+    "move_node_btn": "Drag a node to move it.",
+    "edit_node_btn": "Click on a node to edit its value.",
     "delete_btn": "Click on a node or edge to remove it.",
     "node_give_btn": "Click on a node to make it give one dollar to each connected node.",
     "node_take_btn": "Click on a node to make it take one dollar from each connected node."
@@ -228,6 +232,12 @@ function getButtonName(state) {
     if (state == StateEnum.DELETE) {
         return "delete_btn";
     }
+    if (state == StateEnum.EDIT_NODE_VAL) {
+        return "edit_node_btn";
+    }
+    if (state == StateEnum.MOVE_NODE) {
+        return "move_node_btn";
+    }
     return undefined;
 }
 
@@ -369,6 +379,14 @@ $("#add_node_btn").click(function(e) {
 
 $("#add_edge_btn").click(function(e) {
     setState(StateEnum.ADD_EDGE_A);
+});
+
+$("#move_node_btn").click(function(e) {
+    setState(StateEnum.MOVE_NODE);
+});
+
+$("#edit_node_btn").click(function(e) {
+    setState(StateEnum.EDIT_NODE_VAL);
 });
 
 $("#delete_btn").click(function(e) {
