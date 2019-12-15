@@ -398,7 +398,7 @@ $("#graph_area").click(function(e) {
     }
 });
 
-$("#graph_area").keypress(function(e) {
+$("#graph_area").keyup(function(e) {
     if (state == StateEnum.EDIT_NODE) {
         if (e.key == "Escape") {
             abortEdit();
