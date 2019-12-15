@@ -9,7 +9,7 @@ var StateEnum = Object.freeze({
 });
 var ControlHelp = Object.freeze({
     "add_node_btn": "Click anywhere in the graph area to create a node, then type an integer value to assign to the node.",
-    "add_edge_btn": "Click on a node to select it, then click on another node to add an edge between the two.",
+    "add_edge_btn": "Drag from one node to another to add an edge.",
     "delete_btn": "Click on a node or edge to remove it.",
     "node_give_btn": "Click on a node to make it give one dollar to each connected node.",
     "node_take_btn": "Click on a node to make it take one dollar from each connected node."
@@ -19,6 +19,7 @@ var graph = undefined;
 var state = undefined;
 var selectedNode = undefined;
 var mousedownNode = undefined;
+var tempEdge = undefined;
 
 function checkGraphBalanced() {
     if (graph.isBalanced()) {
@@ -71,12 +72,46 @@ function handleNodeClick(nodeId) {
     }
 }
 
+function drawTempEdge(id, xb, yb) {
+    var nodeDiv = graph.nodes[id].div;
+    var xa = parseInt(nodeDiv.style.left) + 15;
+    var ya = parseInt(nodeDiv.style.top) + 15;
+    var length = Math.sqrt(((xa - xb) * (xa - xb)) + ((ya - yb) * (ya -yb)));
+    var cx = ((xa + xb) / 2) - length / 2;
+    var cy = ((ya + yb) / 2) - (2 / 2);
+    var angle = Math.atan2((ya - yb), (xa - xb)) * (180 / Math.PI);
+    if (!tempEdge) {
+        tempEdge = document.createElement('div');
+        tempEdge.classList.add("edge");
+        graphAreaDiv.appendChild(tempEdge);
+        tempEdge.id = "temp_edge";
+    }
+    tempEdge.style.left = cx + "px";
+    tempEdge.style.top = cy + "px";
+    tempEdge.style.width = length + "px";
+    tempEdge.style.transform = "rotate(" + angle + "deg)";
+}
+
+function removeTempEdge() {
+    tempEdge = null;
+    graphAreaDiv.onmousemove = null;
+    $("#temp_edge").remove();
+}
+
 function handleNodeMousedown(id) {
     mousedownNode = id;
+    if (state == StateEnum.ADD_EDGE_A) {
+        graphAreaDiv.onmousemove = function(e) {
+            drawTempEdge(id, e.pageX, e.pageY);
+        }
+        window.onmouseup = function(e) {
+            removeTempEdge();
+        }
+    }
 }
 
 function handleNodeMouseup(id) {
-    if (state == StateEnum.ADD_EDGE_A & mousedownNode != id) {
+    if (state == StateEnum.ADD_EDGE_A && mousedownNode != id) {
         addEdge(mousedownNode, id);
     }
     mousedownNode = undefined;
@@ -160,7 +195,7 @@ function removeSelection() {
 function finishEdit() {
     if (selectedNode != null) {
         var textbox = document.getElementById("node_input_" + selectedNode);
-        var val = parseInt(textbox.value) | 0;
+        var val = parseInt(textbox.value) || 0;
         graph.nodes[selectedNode].setValue(val);
         checkGraphBalanced();
         selectedNode = undefined;
