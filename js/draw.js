@@ -254,7 +254,6 @@ function getButtonName(state) {
         if (prevState == StateEnum.EDIT_NODE_VAL) {
             return "edit_node_btn";
         }
-        console.log(prevState);
         return "add_node_btn";
     }
     if (state == StateEnum.DELETE) {
