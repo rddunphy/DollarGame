@@ -114,15 +114,49 @@ function removeTempEdge() {
     $("#temp_edge").remove();
 }
 
+function moveEdge(edgeDiv, xa, ya, xb, yb) {
+    var length = Math.sqrt(((xa - xb) * (xa - xb)) + ((ya - yb) * (ya -yb)));
+    // Centre of edge
+    var cx = ((xa + xb) / 2) - length / 2;
+    var cy = ((ya + yb) / 2) - (2 / 2);
+    var angle = Math.atan2((ya - yb), (xa - xb)) * (180 / Math.PI);
+    edgeDiv.style.left = cx + "px";
+    edgeDiv.style.top = cy + "px";
+    edgeDiv.style.width = length + "px";
+    edgeDiv.style.transform = "rotate(" + angle + "deg)";
+}
+
+function moveNode(x, y) {
+    var nodeDiv = graph.nodes[selectedNode].div;
+    nodeDiv.style.left = (x - 15) + "px";
+    nodeDiv.style.top = (y - 15) + "px";
+    for (var n in graph.nodes[selectedNode].connected) {
+        var cid = graph.nodes[selectedNode].connected[n].id;
+        var div = document.getElementById(createEdgeDivId(selectedNode, cid));
+        var nodeDiv = graph.nodes[cid].div;
+        var xb = parseInt(nodeDiv.style.left) + 15;
+        var yb = parseInt(nodeDiv.style.top) + 15;
+        moveEdge(div, x, y, xb, yb);
+    }
+}
+
 function handleNodeMousedown(id) {
     mousedownNode = id;
     if (state == StateEnum.ADD_EDGE_A) {
         graphAreaDiv.onmousemove = function(e) {
             drawTempEdge(id, e.pageX, e.pageY);
-        }
+        };
         window.onmouseup = function(e) {
             removeTempEdge();
-        }
+        };
+    } else if (state == StateEnum.MOVE_NODE) {
+        selectedNode = id;
+        graphAreaDiv.onmousemove = function(e) {
+            moveNode(e.pageX, e.pageY);
+        };
+        window.onmouseup = function(e) {
+            graphAreaDiv.onmousemove = null;
+        };
     }
 }
 
