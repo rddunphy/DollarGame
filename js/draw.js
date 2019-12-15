@@ -91,8 +91,8 @@ function handleNodeClick(nodeId) {
 
 function drawTempEdge(id, xb, yb) {
     var nodeDiv = graph.nodes[id].div;
-    var xa = parseInt(nodeDiv.style.left) + 15;
-    var ya = parseInt(nodeDiv.style.top) + 15;
+    var xa = parseInt(nodeDiv.style.left) + NODE_RADIUS;
+    var ya = parseInt(nodeDiv.style.top) + NODE_RADIUS;
     if (!tempEdge) {
         tempEdge = document.createElement('div');
         tempEdge.classList.add("edge");
@@ -121,13 +121,13 @@ function moveEdge(edgeDiv, xa, ya, xb, yb) {
 }
 
 function getNodeDivPos(x, y) {
-    var minX = graphAreaDiv.offsetLeft + 15;
-    var maxX = graphAreaDiv.offsetLeft + graphAreaDiv.offsetWidth - 15;
-    var minY = graphAreaDiv.offsetTop + 15;
-    var maxY = graphAreaDiv.offsetTop + graphAreaDiv.offsetHeight - 15;
+    var minX = graphAreaDiv.offsetLeft + NODE_RADIUS;
+    var maxX = graphAreaDiv.offsetLeft + graphAreaDiv.offsetWidth - NODE_RADIUS;
+    var minY = graphAreaDiv.offsetTop + NODE_RADIUS;
+    var maxY = graphAreaDiv.offsetTop + graphAreaDiv.offsetHeight - NODE_RADIUS;
     x = Math.max(Math.min(maxX, x), minX);
     y = Math.max(Math.min(maxY, y), minY);
-    return [x-15, y-15];
+    return [x-NODE_RADIUS, y-NODE_RADIUS];
 }
 
 function moveNode(x, y) {
@@ -139,9 +139,9 @@ function moveNode(x, y) {
         var cid = graph.nodes[selectedNode].connected[n].id;
         var div = document.getElementById(createEdgeDivId(selectedNode, cid));
         var nodeDiv = graph.nodes[cid].div;
-        var xb = parseInt(nodeDiv.style.left) + 15;
-        var yb = parseInt(nodeDiv.style.top) + 15;
-        moveEdge(div, x + 15, y + 15, xb, yb);
+        var xb = parseInt(nodeDiv.style.left) + NODE_RADIUS;
+        var yb = parseInt(nodeDiv.style.top) + NODE_RADIUS;
+        moveEdge(div, x + NODE_RADIUS, y + NODE_RADIUS, xb, yb);
     }
 }
 
@@ -188,11 +188,11 @@ function createEdgeDivId(nodeIdA, nodeIdB) {
 
 function createEdgeElement(nodeIdA, nodeIdB) {
     var nodeDiv = graph.nodes[nodeIdA].div;
-    var xa = parseInt(nodeDiv.style.left) + 15;
-    var ya = parseInt(nodeDiv.style.top) + 15;
+    var xa = parseInt(nodeDiv.style.left) + NODE_RADIUS;
+    var ya = parseInt(nodeDiv.style.top) + NODE_RADIUS;
     nodeDiv = graph.nodes[nodeIdB].div;
-    var xb = parseInt(nodeDiv.style.left) + 15;
-    var yb = parseInt(nodeDiv.style.top) + 15;
+    var xb = parseInt(nodeDiv.style.left) + NODE_RADIUS;
+    var yb = parseInt(nodeDiv.style.top) + NODE_RADIUS;
     var edgeDiv = document.createElement('div');
     edgeDiv.classList.add("edge");
     edgeDiv.id = createEdgeDivId(nodeIdA, nodeIdB);
@@ -337,8 +337,8 @@ function handleGraphAreaClick(x, y) {
 }
 
 function loadNode(x, y, val) {
-    x += graphAreaDiv.offsetLeft + graphAreaDiv.offsetWidth / 2 - 15;
-    y += graphAreaDiv.offsetTop + graphAreaDiv.offsetHeight / 2 - 15;
+    x += graphAreaDiv.offsetLeft + graphAreaDiv.offsetWidth / 2 - NODE_RADIUS;
+    y += graphAreaDiv.offsetTop + graphAreaDiv.offsetHeight / 2 - NODE_RADIUS;
     var nodeDiv = document.createElement('div');
     nodeDiv.classList.add("node");
     var id = graph.addNode(nodeDiv);
