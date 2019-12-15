@@ -21,6 +21,7 @@ var ControlHelp = Object.freeze({
 var graphAreaDiv = document.getElementById("graph_area");
 var graph = undefined;
 var state = undefined;
+var prevState = undefined;
 var selectedNode = undefined;
 var mousedownNode = undefined;
 var tempEdge = undefined;
@@ -64,6 +65,10 @@ function handleNodeClick(nodeId) {
             addEdge(selectedNode, nodeId)
         }
         setState(StateEnum.ADD_EDGE_A);
+    } else if (state == StateEnum.EDIT_NODE_VAL) {
+        editNodeVal(nodeId);
+    } else if (state == StateEnum.MOVE_NODE) {
+        // TODO
     } else if (state == StateEnum.DELETE) {
         graphAreaDiv.removeChild(node.div);
         for (var n in graph.nodes[nodeId].connected) {
@@ -160,6 +165,20 @@ function createEdgeElement(nodeIdA, nodeIdB) {
     return edgeDiv;
 }
 
+function editNodeVal(nodeId) {
+    var textbox = document.createElement('input');
+    textbox.value = graph.nodes[nodeId].value;
+    textbox.id = "node_input_" + nodeId;
+    textbox.classList.add("node_input");
+    var nodeDiv = graph.nodes[nodeId].div;
+    nodeDiv.innerHTML = "";
+    nodeDiv.appendChild(textbox);
+    graphAreaDiv.appendChild(nodeDiv);
+    textbox.select();
+    selectedNode = nodeId;
+    setState(StateEnum.EDIT_NODE);
+}
+
 function createNode(x, y) {
     x -= 15;
     y -= 15;
@@ -204,11 +223,14 @@ function finishEdit() {
         checkGraphBalanced();
         selectedNode = undefined;
     }
+    if (prevState == StateEnum.EDIT_NODE_VAL) {
+        setState(StateEnum.EDIT_NODE_VAL);
+    }
 }
 
 function abortEdit() {
     if (selectedNode != null) {
-        var val = graph.nodes[selectedNode].value | 0;
+        var val = graph.nodes[selectedNode].value || 0;
         graph.nodes[selectedNode].setValue(val);
         selectedNode = undefined;
     }
@@ -221,12 +243,18 @@ function getButtonName(state) {
     if (state == StateEnum.NODE_GIVE) {
         return "node_give_btn";
     }
-    if (state == StateEnum.ADD_EDGE_A |
+    if (state == StateEnum.ADD_EDGE_A ||
             state == StateEnum.ADD_EDGE_B) {
         return "add_edge_btn";
     }
-    if (state == StateEnum.ADD_NODE |
-            state == StateEnum.EDIT_NODE) {
+    if (state == StateEnum.ADD_NODE) {
+        return "add_node_btn";
+    }
+    if (state == StateEnum.EDIT_NODE) {
+        if (prevState == StateEnum.EDIT_NODE_VAL) {
+            return "edit_node_btn";
+        }
+        console.log(prevState);
         return "add_node_btn";
     }
     if (state == StateEnum.DELETE) {
@@ -242,6 +270,7 @@ function getButtonName(state) {
 }
 
 function setState(newState) {
+    prevState = state;
     if (state == StateEnum.EDIT_NODE) {
         finishEdit();
     } else if (state == StateEnum.ADD_EDGE_B) {
