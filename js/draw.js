@@ -79,9 +79,11 @@ function handleNodeClick(nodeId) {
         graph.removeNode(nodeId);
         checkGraphBalanced();
     } else if (state == StateEnum.EDIT_NODE) {
-        setState(prevState);
-        if (state == StateEnum.EDIT_NODE_VAL) {
-            handleNodeClick(nodeId);
+        if (nodeId != selectedNode) {
+            setState(prevState);
+            if (state == StateEnum.EDIT_NODE_VAL) {
+                handleNodeClick(nodeId);
+            }
         }
     }
 }
