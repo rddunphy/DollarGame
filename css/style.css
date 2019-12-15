@@ -70,6 +70,6 @@ footer {
     color: white;
 }
 
-.graph_area_balanced .node {
+.graph_area_balanced .node, .graph_area_balanced .node_input {
     background-color: green;
 }
