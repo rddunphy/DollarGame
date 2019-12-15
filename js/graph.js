@@ -1,3 +1,5 @@
+const MAX_NODE_VAL = 99;
+const MIN_NODE_VAL = -MAX_NODE_VAL;
 
 function newNodeId(nodes) {
     for (var i = 0; i < Object.entries(nodes).length + 1; i++) {
@@ -59,12 +61,28 @@ function Node(id, div) {
         return false;
     };
     this.give = function() {
+        if (this.value - this.connected.length < MIN_NODE_VAL) {
+            return;
+        }
+        for (var i=0; i < this.connected.length; i++) {
+            if (this.connected[i].value + 1 > MAX_NODE_VAL) {
+                return;
+            }
+        }
         for (var i=0; i < this.connected.length; i++) {
             this.connected[i].setValue(this.connected[i].value + 1);
         }
         this.setValue(this.value - this.connected.length);
     };
     this.take = function() {
+        if (this.value + this.connected.length > MAX_NODE_VAL) {
+            return;
+        }
+        for (var i=0; i < this.connected.length; i++) {
+            if (this.connected[i].value - 1 < MIN_NODE_VAL) {
+                return;
+            }
+        }
         for (var i=0; i < this.connected.length; i++) {
             this.connected[i].setValue(this.connected[i].value - 1);
         }

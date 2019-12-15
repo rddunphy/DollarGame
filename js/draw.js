@@ -13,7 +13,7 @@ var ControlHelp = Object.freeze({
     "add_node_btn": "Click anywhere in the graph area to create a node, then type an integer value to assign to the node.",
     "add_edge_btn": "Drag from one node to another to add an edge.",
     "move_node_btn": "Drag a node to move it.",
-    "edit_node_btn": "Click on a node to edit its value.",
+    "edit_node_btn": "Click on a node to edit its value (values in range " + MIN_NODE_VAL + " to " + MAX_NODE_VAL + ").",
     "delete_btn": "Click on a node or edge to remove it.",
     "node_give_btn": "Click on a node to make it give one dollar to each connected node.",
     "node_take_btn": "Click on a node to make it take one dollar from each connected node."
@@ -260,6 +260,7 @@ function finishEdit() {
     if (selectedNode != null) {
         var textbox = document.getElementById("node_input_" + selectedNode);
         var val = parseInt(textbox.value) || 0;
+        val = Math.max(Math.min(val, MAX_NODE_VAL), MIN_NODE_VAL);
         graph.nodes[selectedNode].setValue(val);
         checkGraphBalanced();
         selectedNode = undefined;
