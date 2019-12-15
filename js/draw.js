@@ -92,20 +92,13 @@ function drawTempEdge(id, xb, yb) {
     var nodeDiv = graph.nodes[id].div;
     var xa = parseInt(nodeDiv.style.left) + 15;
     var ya = parseInt(nodeDiv.style.top) + 15;
-    var length = Math.sqrt(((xa - xb) * (xa - xb)) + ((ya - yb) * (ya -yb)));
-    var cx = ((xa + xb) / 2) - length / 2;
-    var cy = ((ya + yb) / 2) - (2 / 2);
-    var angle = Math.atan2((ya - yb), (xa - xb)) * (180 / Math.PI);
     if (!tempEdge) {
         tempEdge = document.createElement('div');
         tempEdge.classList.add("edge");
         graphAreaDiv.appendChild(tempEdge);
         tempEdge.id = "temp_edge";
     }
-    tempEdge.style.left = cx + "px";
-    tempEdge.style.top = cy + "px";
-    tempEdge.style.width = length + "px";
-    tempEdge.style.transform = "rotate(" + angle + "deg)";
+    moveEdge(tempEdge, xa, ya, xb, yb);
 }
 
 function removeTempEdge() {
@@ -118,7 +111,7 @@ function moveEdge(edgeDiv, xa, ya, xb, yb) {
     var length = Math.sqrt(((xa - xb) * (xa - xb)) + ((ya - yb) * (ya -yb)));
     // Centre of edge
     var cx = ((xa + xb) / 2) - length / 2;
-    var cy = ((ya + yb) / 2) - (2 / 2);
+    var cy = ((ya + yb) / 2) - 1;
     var angle = Math.atan2((ya - yb), (xa - xb)) * (180 / Math.PI);
     edgeDiv.style.left = cx + "px";
     edgeDiv.style.top = cy + "px";
@@ -188,21 +181,13 @@ function createEdgeElement(nodeIdA, nodeIdB) {
     nodeDiv = graph.nodes[nodeIdB].div;
     var xb = parseInt(nodeDiv.style.left) + 15;
     var yb = parseInt(nodeDiv.style.top) + 15;
-    var length = Math.sqrt(((xa - xb) * (xa - xb)) + ((ya - yb) * (ya -yb)));
-    // Centre of edge
-    var cx = ((xa + xb) / 2) - length / 2;
-    var cy = ((ya + yb) / 2) - (2 / 2);
-    var angle = Math.atan2((ya - yb), (xa - xb)) * (180 / Math.PI);
     var edgeDiv = document.createElement('div');
     edgeDiv.classList.add("edge");
     edgeDiv.id = createEdgeDivId(nodeIdA, nodeIdB);
-    edgeDiv.style.left = cx + "px";
-    edgeDiv.style.top = cy + "px";
     edgeDiv.onclick = function() {
         handleEdgeClick(nodeIdA, nodeIdB);
     };
-    edgeDiv.style.width = length + "px";
-    edgeDiv.style.transform = "rotate(" + angle + "deg)";
+    moveEdge(edgeDiv, xa, ya, xb, yb);
     return edgeDiv;
 }
 
