@@ -78,6 +78,11 @@ function handleNodeClick(nodeId) {
         }
         graph.removeNode(nodeId);
         checkGraphBalanced();
+    } else if (state == StateEnum.EDIT_NODE) {
+        setState(prevState);
+        if (state == StateEnum.EDIT_NODE_VAL) {
+            handleNodeClick(nodeId);
+        }
     }
 }
 
@@ -291,7 +296,7 @@ function setState(newState) {
 
 function handleGraphAreaClick(x, y) {
     if (state == StateEnum.EDIT_NODE) {
-        setState(StateEnum.ADD_NODE);
+        setState(prevState);
     }
     if (state == StateEnum.ADD_NODE) {
         createNode(x, y);
