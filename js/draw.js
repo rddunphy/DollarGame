@@ -1,3 +1,4 @@
+const NODE_RADIUS = 15;
 var StateEnum = Object.freeze({
     "ADD_NODE": 0,
     "ADD_EDGE_A": 1,
@@ -119,17 +120,28 @@ function moveEdge(edgeDiv, xa, ya, xb, yb) {
     edgeDiv.style.transform = "rotate(" + angle + "deg)";
 }
 
+function getNodeDivPos(x, y) {
+    var minX = graphAreaDiv.offsetLeft + 15;
+    var maxX = graphAreaDiv.offsetLeft + graphAreaDiv.offsetWidth - 15;
+    var minY = graphAreaDiv.offsetTop + 15;
+    var maxY = graphAreaDiv.offsetTop + graphAreaDiv.offsetHeight - 15;
+    x = Math.max(Math.min(maxX, x), minX);
+    y = Math.max(Math.min(maxY, y), minY);
+    return [x-15, y-15];
+}
+
 function moveNode(x, y) {
     var nodeDiv = graph.nodes[selectedNode].div;
-    nodeDiv.style.left = (x - 15) + "px";
-    nodeDiv.style.top = (y - 15) + "px";
+    [x, y] = getNodeDivPos(x, y);
+    nodeDiv.style.left = x + "px";
+    nodeDiv.style.top = y + "px";
     for (var n in graph.nodes[selectedNode].connected) {
         var cid = graph.nodes[selectedNode].connected[n].id;
         var div = document.getElementById(createEdgeDivId(selectedNode, cid));
         var nodeDiv = graph.nodes[cid].div;
         var xb = parseInt(nodeDiv.style.left) + 15;
         var yb = parseInt(nodeDiv.style.top) + 15;
-        moveEdge(div, x, y, xb, yb);
+        moveEdge(div, x + 15, y + 15, xb, yb);
     }
 }
 
@@ -206,8 +218,7 @@ function editNodeVal(nodeId) {
 }
 
 function createNode(x, y) {
-    x -= 15;
-    y -= 15;
+    [x, y] = getNodeDivPos(x, y);
     var nodeDiv = document.createElement('div');
     nodeDiv.classList.add("node");
     nodeDiv.style.left = x + "px";
